@@ -1,0 +1,166 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../ee-common/ee-common.html">
+
+<!--
+An element which adds an aggregation query fragment to elastic-search
+component, and makes the result of this aggregation available via the
+agg-result property
+
+Example:
+
+    <elastic-aggregation>
+
+    </elastic-aggregation>
+
+@demo demo/index.html
+-->
+
+<script>
+  Polymer({
+    is: 'elastic-aggregation',
+
+    properties: {
+      /**
+       * The number of buckets to show in the aggregation results.  This field
+       * is optional.  If present, it applies the size to the ejs aggregation
+       */
+      size: {
+        type: Number,
+        value: 10,
+        notify: true,
+        observer: 'setSize'
+      },
+
+      /**
+       * The name of this aggregation.  Each elastic aggregation must have a name 
+       * associated with it; the name is returned in the query results
+       */
+      name: {
+        type: String,
+        readOnly: true,
+        notify: true
+      },
+
+      /**
+       * Raw search results which must be parsed to find the results for this
+       * aggregation.
+       */
+      allResults: {
+        type: Array,
+        notify: false,
+        observer: 'updateAggResults'
+      },
+
+      /**
+       * object that contains the query results of just this aggregation
+       */
+      aggResults: {
+        type: Object,
+        notify: true,
+        readOnly: true
+      },
+
+      /**
+       * Supply a string that is the elastic.js aggregation fragment.
+       *
+       * Example:
+       *
+       *     <elastic-aggregation
+       *         ejs-agg-snippet="TermsAggregation('agg_name')
+       *         .field('AGG_FIELD').size(10)">
+       *     </elastic-aggregation>
+       *
+       */
+      ejsAggSnippet: {
+        type: String,
+        notify: false
+      },
+
+      /**
+       * The aggregation object returned from elastic.js
+       */      
+      ejsAggObject: {
+        type: Object,
+        readOnly: true,
+        notify: true
+      },
+
+      /**
+       * Collection (Map type) of all aggregations for this application.  
+       * This property should be initialized elsewhere/supplied to this element.
+       */
+      aggregations: {
+        type: Object,
+        notify: true
+      },
+
+      /**
+       * error from building aggregation object, if any
+       */
+      lastError: {
+        type: Object,
+        readOnly: true,
+        notify: true
+      }
+
+    },
+
+    observers: [
+      'updateAgg(ejsAggSnippet, aggregations)'
+    ],
+
+    /**
+     * extract the aggregation name from the aggregation string.  No matter
+     * what type of elastic aggregation, it will always have a unique name.
+     */
+    getName: function(ejsAggObj) {
+      return Object.keys(ejsAggObj.toJSON())[0];
+    },
+
+    /**
+     * create ejs aggregation object based on input string.  The string is
+     * checked to ensure that it starts with 'ejs.', better ensuring that 
+     * it is a valid function snippet.
+     */
+    updateAgg: function (ejsAggSnippet, aggregations) {
+      try {
+        if (!ejsAggSnippet.startsWith('ejs.')) {
+          throw new Error('aggregation string must start with ejs.');
+        }
+
+        var agg = eval(ejsAggSnippet); // jshint ignore: line
+
+        var name = this.getName(agg);
+        if (name === 'undefined') {
+          throw new Error('aggregation must have a name');
+        }
+
+        this._setEjsAggObject(agg);
+        
+        this._setName(name);
+        this.aggregations.set(name, agg);
+      }
+      catch (err) {
+        this._setLastError(err);
+      }
+    },
+
+    /**
+     * change the number of buckets in the results for this aggregation
+     */
+    setSize: function(size) {
+      if (!this.ejsAggObject) return;
+      this.ejsAggObject.size(size);
+      this.aggregations.set(this.name, this.ejsAggObject);
+    },
+
+    /**
+     * 
+     */
+    updateAggResults: function (results) {
+      if (!results) return;
+      this._setAggResults(results['aggregations'][this.name]);
+    },
+
+  });
+</script>

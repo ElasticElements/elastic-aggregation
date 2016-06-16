@@ -1,0 +1,31 @@
+{
+  "name": "elastic-aggregation",
+  "version": "0.0.1",
+  "authors": [
+    "David Flynt"
+  ],
+  "description": "elastic-aggregation is an element which creates an elastic aggregatgion object
+and captures the aggregation returned from elastic-search",
+  "keywords": [
+    "Elasticsearch",
+    "elastic",
+    "ElasticUI",
+    "web-component",
+    "polymer"
+  ],
+  "main": "elastic-aggregation.html",
+  "license": "https://opensource.org/licenses/MIT",
+  "homepage": "https://github.com/ElasticElements/elastic-aggregation",
+  "ignore": [
+    "/.*",
+    "/test/"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.2.0",
+    "ee-common": "DigElements/ee-common"
+  },
+  "devDependencies": {
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "web-component-tester": "^4.0.0"
+  }
+}
