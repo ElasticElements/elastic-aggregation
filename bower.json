@@ -4,8 +4,7 @@
   "authors": [
     "David Flynt"
   ],
-  "description": "elastic-aggregation is an element which creates an elastic aggregatgion object
-and captures the aggregation returned from elastic-search",
+  "description": "creates an elastic aggregation object",
   "keywords": [
     "Elasticsearch",
     "elastic",
