@@ -21,10 +21,20 @@
   ],
   "dependencies": {
     "polymer": "Polymer/polymer#^1.2.0",
-    "ee-common": "DigElements/ee-common"
+    "ee-common": "ElasticElements/ee-common"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
     "web-component-tester": "^4.0.0"
+  },
+  "ignore": [
+    "**/.*",
+    "bower_components",
+    "test",
+    "demo",
+    "wct.conf.json"
+  ],
+  "resolutions": {
+    "lodash": "^4.12.0"
   }
 }
