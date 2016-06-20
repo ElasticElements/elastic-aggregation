@@ -1,6 +1,6 @@
 {
   "name": "elastic-aggregation",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "authors": [
     "David Flynt"
   ],
@@ -16,8 +16,11 @@
   "license": "https://opensource.org/licenses/MIT",
   "homepage": "https://github.com/ElasticElements/elastic-aggregation",
   "ignore": [
-    "/.*",
-    "/test/"
+    "**/.*",
+    "bower_components",
+    "test",
+    "demo",
+    "wct.conf.json"
   ],
   "dependencies": {
     "polymer": "Polymer/polymer#^1.2.0",
@@ -27,13 +30,6 @@
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
     "web-component-tester": "^4.0.0"
   },
-  "ignore": [
-    "**/.*",
-    "bower_components",
-    "test",
-    "demo",
-    "wct.conf.json"
-  ],
   "resolutions": {
     "lodash": "^4.12.0"
   }
